@@ -1,12 +1,14 @@
 var buttons = document.querySelectorAll(".drum");
 
 for (var i = 0; i<buttons.length; i++){
-    buttons[i].addEventListener("click", handleClick);
+    buttons[i].addEventListener("click", function(){
+        var buttonName = this.innerHTML;
+        handleClick(buttonName)
+        handleButtonAnimation(buttonName);
+    });
 }
 
-function handleClick(){
-    var buttonName = this.innerHTML;
-
+function handleClick(buttonName){
     switch(buttonName){
         case "w":
             var audio = new Audio('sounds/tom-1.mp3');
@@ -48,5 +50,15 @@ function handleClick(){
     }
 }
 
-//var audio = new Audio('sounds/tom-1.mp3');
-//audio.play();
+// Adds eventListener on keyboard pressing
+document.addEventListener("keydown", function(event){
+    handleClick(event.key);
+    handleButtonAnimation(event.key);
+})
+
+function handleButtonAnimation(key){
+    var activeButton = document.querySelector("." + key);
+    activeButton.classList.add("pressed");
+
+    setTimeout(function(){activeButton.classList.remove("pressed")}, 100);
+}
